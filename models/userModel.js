@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
 
-userSchema = {
+const userSchema = new mongoose.Schema({
   full_name: {
     type: String,
     required: true,
@@ -34,7 +34,10 @@ userSchema = {
   },
   account_details: {
     acccount_number: String,
-    account_balance: Number,
+    account_balance: {
+        type:Number,
+        required:[true,'a user must have a starting balance']
+    },
   },
   personal_pin: Number,
   role: {
@@ -48,7 +51,7 @@ userSchema = {
     select: false,
   },
   passwordChangedAt: Date,
-};
+});
 
 userSchema.pre("save", async function(next) {
   // only run this function is password was modified
@@ -56,6 +59,14 @@ userSchema.pre("save", async function(next) {
   //hash password with cost of 12
   this.password = await bcrypt.hash(this.password, 12);
   this.passwordConfirm = undefined;
+  next();
+});
+userSchema.pre("save", async function(next) {
+  // only run this function is password was modified
+  //hash password with cost of 12
+  this.account_details.acccount_number = Math.floor(
+    1000000000 + Math.random() * 9000000000
+  ).toString();
   next();
 });
 

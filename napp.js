@@ -1,19 +1,19 @@
 
-transaction = {
-    userId: string,
-    transaction_type: ["transfer", "deposit", "withdrawal"],
-    amount: Number,
-    from: userId,
-    to: userId,
-    transaction_date: Date.now(),
-    status: ['failed', 'success'],// default success
-}
-Complaint = {
-    msg: string,
-    transaction_id: string,
-    user_id: string,
-    status: ['approved', 'declined']
-}
+// transaction = {
+//     userId: string,
+//     transaction_type: ["transfer", "deposit", "withdrawal"],
+//     amount: Number,
+//     from: userId,
+//     to: userId,
+//     transaction_date: Date.now(),
+//     status: ['failed', 'success'],// default success
+// }
+// Complaint = {
+//     msg: string,
+//     transaction_id: string,
+//     user_id: string,
+//     status: ['approved', 'declined']
+// }
 // ************************ ADMINSTRATION DETAILS ************************************
 /* THE THINGS TO BE DONE BY ADMIN
     1. Add users: users is added to database
@@ -54,13 +54,13 @@ Complaint = {
     4. admin/disable_user
     5. admin/reverse_transfer
 */
-Collapse
+//Collapse
 
 
 
 
 
-Send a message to walz
+//Send a message to walz
 
 
 
