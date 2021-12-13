@@ -85,6 +85,10 @@ userSchema.methods.correctPassword = async function(
   return await bcrypt.compare(candidatePassword, userPassword);
 };
 
+userSchema.methods.depositMoney = function(amt){
+  return this.account_details.account_balance + amt
+}
+
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;

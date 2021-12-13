@@ -39,6 +39,7 @@ const updateUser = (req, res) => {
     message: 'This route has not been implemented yet'
   });
 };
+
 const deleteUser =  catchAsync(async(req, res,next) => {
     const user = await User.findByIdAndDelete(req.params.id);
     if (!user) {

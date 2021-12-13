@@ -10,10 +10,15 @@ const {
   createUser,
   deleteUser,
   getUser,
-  suspendUser
+  suspendUser,
 } = require("../controllers/userController");
 
-router.post("/signup", authController.signup);
+router.post(
+  "/signup",
+  authController.protect,
+  authController.restrictTo("admin"),
+  authController.signup
+);
 router.post("/login", authController.login);
 
 router.delete("/suspend-user/:id", authController.protect, suspendUser);
