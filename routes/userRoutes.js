@@ -15,7 +15,11 @@ router.post(
   authController.signup
 );
 router.post("/login", authController.login);
-router.delete("/disable-user/:id", authController.protect, userController.disableUser);
+router.delete(
+  "/disable-user/:id",
+  authController.protect,
+  userController.disableUser
+);
 
 router.use(authController.protect);
 router.get("/me", userController.getMe, userController.getUser);
@@ -27,7 +31,7 @@ router
     authController.restrictTo("user", "admin"),
     userController.getAllUsers
   )
-  .post(authController.restrictTo("user", "admin"), userController.createUser);
+  .post(authController.restrictTo("admin"), userController.createUser);
 
 router
   .route("/:id")

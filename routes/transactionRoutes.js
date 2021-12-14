@@ -8,6 +8,11 @@ const router = express.Router({ mergeParams: true });
 const transactionController = require("./../controllers/transactionController");
 router.use(authController.protect);
 
+router.post(
+  "/reverse-transaction/:id",
+  authController.restrictTo("admin"),
+  transactionController.reverseTransaction
+);
 
 router
   .route("/")
@@ -17,8 +22,13 @@ router
     transactionController.createTransaction
   );
 
-  router
-  .route('/:id')
+router
+  .route("/:id")
   .get(transactionController.getTransaction)
+  .patch(transactionController.updateTransaction)
+  .delete(
+    authController.restrictTo("admin"),
+    transactionController.deleteTransaction
+  );
 
 module.exports = router;
