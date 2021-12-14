@@ -1,7 +1,7 @@
 const express = require("express");
 // const userController = require('./../controllers/userControllers');
 const authController = require("./../controllers/authController");
-
+const transactionRouter = require("./transactionRoutes");
 const router = express.Router();
 
 const {
@@ -10,8 +10,10 @@ const {
   createUser,
   deleteUser,
   getUser,
-  suspendUser,
+  disableUser,
 } = require("../controllers/userController");
+
+router.use("/:userId/transactions", transactionRouter);
 
 router.post(
   "/signup",
@@ -21,11 +23,15 @@ router.post(
 );
 router.post("/login", authController.login);
 
-router.delete("/suspend-user/:id", authController.protect, suspendUser);
+router.delete("/suspend-user/:id", authController.protect, disableUser);
 
 router
   .route("/")
-  .get(getAllUsers)
+  .get(
+    authController.protect,
+    authController.restrictTo("user", "admin"),
+    getAllUsers
+  )
   .post(createUser);
 
 router

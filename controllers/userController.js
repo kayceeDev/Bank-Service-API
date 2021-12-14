@@ -12,7 +12,7 @@ const filterObj = (obj, ...allowedFields) => {
 };
 
 const getAllUsers = catchAsync(async (req, res, next) => {
-  const users = await User.find();
+  const users = await User.find().populate('transactions','account_number');
   res.status(200).json({
     status: 'success',
     results: users.length,
@@ -51,35 +51,8 @@ const deleteUser =  catchAsync(async(req, res,next) => {
     });
 });
 
-const updateMe = catchAsync(async (req, res, next) => {
-  // 1. create error if user posts password data
-  if (req.body.password || req.body.passwordConfirm) {
-    return next(
-      new AppError(
-        'This route is not for password updates, please use /updateMyPassword',
-        400
-      )
-    );
-  }
 
-  // filter out unwanted users not allowed to be updated
-  const filteredBody = filterObj(req.body, 'name', 'email');
-
-  // update user document
-  const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
-    new: true,
-    runValidators: true
-  });
-
-  res.status(200).json({
-    status: 'success',
-    data: {
-      user: updatedUser
-    }
-  });
-});
-
-const suspendUser = catchAsync(async (req, res, next) => {
+const disableUser = catchAsync(async (req, res, next) => {
   await User.findByIdAndUpdate(req.params.id, { active: false });
   res.status(200).json({
     status: 'success',
@@ -93,6 +66,5 @@ module.exports = {
   createUser,
   updateUser,
   deleteUser,
-  updateMe,
-  suspendUser
+  disableUser
 };

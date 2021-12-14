@@ -58,16 +58,12 @@ transactionSchema.pre(/^find/, function(next) {
   // }).
 
   this.populate({
-    path: "user",
-    select: "full_name account_details",
-  })
-    .populate({
       path: "from",
       select: "full_name",
     })
     .populate({
       path: "to",
-      select: "full_name",
+      select: "full_name acccount_number",
     });
   next();
 });
