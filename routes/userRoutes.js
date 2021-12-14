@@ -4,14 +4,7 @@ const authController = require("./../controllers/authController");
 const transactionRouter = require("./transactionRoutes");
 const router = express.Router();
 
-const {
-  getAllUsers,
-  updateUser,
-  createUser,
-  deleteUser,
-  getUser,
-  disableUser,
-} = require("../controllers/userController");
+const userController = require("../controllers/userController");
 
 router.use("/:userId/transactions", transactionRouter);
 
@@ -22,26 +15,28 @@ router.post(
   authController.signup
 );
 router.post("/login", authController.login);
+router.delete("/disable-user/:id", authController.protect, userController.disableUser);
 
-router.delete("/suspend-user/:id", authController.protect, disableUser);
+router.use(authController.protect);
+router.get("/me", userController.getMe, userController.getUser);
 
 router
   .route("/")
   .get(
     authController.protect,
     authController.restrictTo("user", "admin"),
-    getAllUsers
+    userController.getAllUsers
   )
-  .post(createUser);
+  .post(authController.restrictTo("user", "admin"), userController.createUser);
 
 router
   .route("/:id")
-  .get(getUser)
-  .patch(updateUser)
+  .get(authController.restrictTo("user", "admin"), userController.getUser)
+  .patch(userController.updateUser)
   .delete(
     authController.protect,
     authController.restrictTo("admin"),
-    deleteUser
+    userController.deleteUser
   );
 
 module.exports = router;
