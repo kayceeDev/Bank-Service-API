@@ -8,6 +8,7 @@ const xss = require("xss-clean");
 const AppError = require("./utils/appError");
 const globalErrorHandler = require("./controllers/errorControllers");
 const userRouter = require("./routes/userRoutes");
+const transactionRouter = require("./routes/transactionRoutes");
 
 const app = express();
 
@@ -29,7 +30,7 @@ const limiter = rateLimit({
 app.use("/api", limiter);
 
 // Body parser, reads data from req.body
-app.use(express.json({ limit: "10kb" })); // middleware function that can modify income data
+app.use(express.json({ limit: "40kb" })); // middleware function that can modify income data
 
 // data Sanitization againt NoSQL query injection
 app.use(mongoSanitize());
@@ -44,6 +45,7 @@ app.use((req, res, next) => {
 
 // ROUTES
 
+app.use("/api/v1/transactions", transactionRouter);
 app.use("/api/v1/users", userRouter);
 
 app.all("*", (req, res, next) => {

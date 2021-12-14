@@ -38,9 +38,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     full_name: req.body.full_name,
     email: req.body.email,
     role: req.body.role,
-    account_details: {
-      account_balance: req.body.account_balance,
-    },
+    account_balance: req.body.account_balance,
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,
     passwordChangedAt: req.body.passwordChangedAt,
